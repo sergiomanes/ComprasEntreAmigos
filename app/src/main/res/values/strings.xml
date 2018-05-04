@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Compras Entre Amigos</string>
+    <string name="NombreAmigo">¿Cómo se llama tu amigo?</string>
+    <string name="CuantoPago">¿Cuánto ha pagado?</string>
+    <string name="Descontar">¿Hay que descontarle algún gasto? Dejá en $0 si debería gastar lo mismo que todos</string>
+    <string name="pago_grupal">Pago grupal: $</string>
+    <string name="pago_grupalpesos">0</string>
+    <string name="continuar">Continuar</string>
+    <string name="agregar">Agregar amigo</string>
+    <string name="calcular">¡Calcular!</string>
+    <string name="name">name</string>
+    <string name="paid">paid</string>
+    <string name="discount">discount</string>
+    <string name="pagString">Pagó</string>
+    <string name="descuentostring">Se le descuenta</string>
+    <string name="calculadora">Calculadora</string>
+    <string name="borrar_listado">Borrar Listado</string>
+</resources>

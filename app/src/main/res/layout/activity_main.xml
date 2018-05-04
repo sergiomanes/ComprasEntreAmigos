@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.applications.usuario.compraentreamigos.MainActivity">
+
+
+    <ImageButton
+        android:id="@+id/buttonSiguiente"
+        android:layout_width="61dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="28dp"
+        android:adjustViewBounds="false"
+        android:background="?android:attr/scrollbarTrackVertical"
+        android:gravity="center"
+        android:tint="@color/colorAccent"
+        android:visibility="visible"
+        app:layout_constraintStart_toEndOf="@+id/editTextField"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
+        app:srcCompat="@android:drawable/ic_media_ff" />
+
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="match_parent"
+        android:textSize="16sp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="53dp"
+        android:text="@string/NombreAmigo"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/textViewpagoGrupal"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginTop="230dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:text="@string/pago_grupal"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewpagoGrupalPesos"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginTop="230dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginLeft="100dp"
+        android:text="@string/pago_grupalpesos"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <EditText
+        android:id="@+id/editTextField"
+        android:layout_width="244dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="28dp"
+        android:ems="10"
+        android:gravity="center"
+        android:inputType="textPersonName"
+        android:singleLine="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
+
+
+    <Button
+        android:id="@+id/buttonCalcular"
+        android:layout_width="105dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="@string/calcular"
+        app:layout_constraintBottom_toTopOf="@+id/textViewpagoGrupalPesos"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerViewLista"
+        android:layout_width="350dp"
+        android:layout_height="244dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:windowSoftInputMode="adjustResize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewpagoGrupal" />
+
+    <ImageButton
+        android:id="@+id/imageButtonCalc"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/ic_dialpad_black_48dp"
+        android:contentDescription="@string/calculadora" />
+
+    <ImageButton
+        android:id="@+id/imageButtonTrash"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_delete"
+        android:contentDescription="@string/borrar_listado" />
+
+    <ImageButton
+        android:id="@+id/imageButtonHelp"
+        android:layout_width="44dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:contentDescription="@string/borrar_listado"
+        app:layout_constraintBottom_toTopOf="@+id/textViewpagoGrupal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_help" />
+
+
+</android.support.constraint.ConstraintLayout>
