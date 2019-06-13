@@ -25,6 +25,6 @@ public class DetailsActivity extends AppCompatActivity {
         Recyclerlistado.setLayoutManager(new LinearLayoutManager(this));
         AdaptadorAmigosDetail adaptador = new AdaptadorAmigosDetail(Lista);
         Recyclerlistado.setAdapter(adaptador);
-
+// de dev2
     }
 }
