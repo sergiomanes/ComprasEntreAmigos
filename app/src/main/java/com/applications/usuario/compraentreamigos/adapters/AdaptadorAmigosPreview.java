@@ -1,4 +1,4 @@
-package com.applications.usuario.compraentreamigos;
+package com.applications.usuario.compraentreamigos.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,8 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.List;
+import com.applications.usuario.compraentreamigos.models.Amigo;
+import com.applications.usuario.compraentreamigos.R;
 
+import java.util.List;
 
 public class AdaptadorAmigosPreview extends RecyclerView.Adapter<AdaptadorAmigosPreview.Holder> {
 
@@ -28,7 +30,7 @@ public class AdaptadorAmigosPreview extends RecyclerView.Adapter<AdaptadorAmigos
     @Override
     public void onBindViewHolder(Holder holder, int position) {
         Amigo amigo = ListaAmigos.get(position);
-        holder.Bind(amigo.getName(),amigo.getPaid(),amigo.getDiscount(),itemClickListener);
+        holder.bind(amigo.getName(),amigo.getPaid(),itemClickListener);
     }
 
     @Override
@@ -36,22 +38,17 @@ public class AdaptadorAmigosPreview extends RecyclerView.Adapter<AdaptadorAmigos
         return ListaAmigos.size();
     }
 
-
-
-
-    class Holder extends RecyclerView.ViewHolder {
-        TextView TVname,TVpaid,TVdiscount;
+    protected static class Holder extends RecyclerView.ViewHolder {
+        TextView TVname,TVpaid;
         Holder(View itemView) {
             super(itemView);
-            TVname = (TextView) itemView.findViewById(R.id.textViewName);
-            TVpaid = (TextView) itemView.findViewById(R.id.textPaid);
-            TVdiscount = (TextView) itemView.findViewById(R.id.textViewDiscount);
+            TVname = itemView.findViewById(R.id.textViewName);
+            TVpaid = itemView.findViewById(R.id.textPaid);
         }
 
-        void Bind(String Name, double paid, double discount, final OnItemClickListener listener) {
+        void bind(String Name, double paid, final OnItemClickListener listener) {
         TVname.setText(Name);
         TVpaid.setText(String.valueOf(paid));
-        TVdiscount.setText(String.valueOf(discount));
         itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -65,5 +62,4 @@ public class AdaptadorAmigosPreview extends RecyclerView.Adapter<AdaptadorAmigos
     public interface OnItemClickListener{
         void onItemLongClick(int position);
     }
-
 }

@@ -1,4 +1,4 @@
-package com.applications.usuario.compraentreamigos;
+package com.applications.usuario.compraentreamigos.activities;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
@@ -22,6 +23,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.applications.usuario.compraentreamigos.models.Amigo;
+import com.applications.usuario.compraentreamigos.R;
+import com.applications.usuario.compraentreamigos.adapters.AdaptadorAmigosPreview;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,34 +39,53 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView RecycleLista;
     List<Amigo> Amigos;
     Amigo amigo;
-    ImageButton calc,trash,continuar,helper;
-    enum  faseIngreso {NOMBRE,PAGO,DESCUENTO}; //me sirve para saber si debe ingresar el nombre, lo que pago o lo que se le debe descontar.
+    ImageButton calc,trash,continuar;
+    enum faseIngreso {NOMBRE,PAGO}
     faseIngreso fase;
     AdaptadorAmigosPreview Previewadapter;
+    double pagoTotalGrupal = 0;
 
     //para encontrar la calculadora del sistema
     ArrayList<HashMap<String,Object>> items;
-    PackageManager pm ;
+    PackageManager pm;
     List<PackageInfo> packs;
-
+    Handler calculatorHandler = new Handler();
+    Runnable calculatorRunnable = new Runnable() {
+        @Override
+        public void run() {
+            //obtengo lista de apps para luego buscar en la calculadora
+            items = new ArrayList<>();
+            pm = getPackageManager();
+            packs = pm.getInstalledPackages(0);
+            for (PackageInfo pi : packs) {
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("appName", pi.applicationInfo.loadLabel(pm));
+                map.put("packageName", pi.packageName);
+                items.add(map);
+            }
+            calc.setVisibility(View.VISIBLE);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        titulo = (TextView) findViewById(R.id.textViewTitle);
-        pagoGrupal = (TextView) findViewById(R.id.textViewpagoGrupalPesos);
-        continuar = (ImageButton) findViewById(R.id.buttonSiguiente);
-        calcular = (Button) findViewById(R.id.buttonCalcular);
-        textoEditable = (EditText) findViewById(R.id.editTextField);
-        RecycleLista = (RecyclerView) findViewById(R.id.recyclerViewLista);
-        calc = (ImageButton) findViewById(R.id.imageButtonCalc);
-        trash = (ImageButton) findViewById(R.id.imageButtonTrash);
-        helper = (ImageButton) findViewById(R.id.imageButtonHelp);
+        titulo = findViewById(R.id.textViewTitle);
+        pagoGrupal = findViewById(R.id.textViewpagoGrupalPesos);
+        continuar = findViewById(R.id.buttonSiguiente);
+        calcular = findViewById(R.id.buttonCalcular);
+        textoEditable = findViewById(R.id.editTextField);
+        RecycleLista = findViewById(R.id.recyclerViewLista);
+        calc = findViewById(R.id.imageButtonCalc);
+        trash = findViewById(R.id.imageButtonTrash);
+
+        calculatorHandler.post(calculatorRunnable);
 
         Amigos = new ArrayList<>();
         fase = faseIngreso.NOMBRE;
 
+        pagoGrupal.setText(String.format(getResources().getString(R.string.pago_grupal), pagoTotalGrupal));
 
         RecycleLista.setHasFixedSize(true); //mejora performance si se que no va a cambiar el tamano de la letra
         RecycleLista.setItemAnimator(new DefaultItemAnimator()); //animacion por default
@@ -75,71 +99,38 @@ public class MainActivity extends AppCompatActivity {
         });
         RecycleLista.setAdapter(Previewadapter);
 
-        //obtengo lista de apps para luego buscar en la calculadora
-        items =new  ArrayList<HashMap<String,Object>>();
-        pm = getPackageManager();
-        packs = pm.getInstalledPackages(0);
-        for (PackageInfo pi : packs)
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-            map.put("appName", pi.applicationInfo.loadLabel(pm));
-            map.put("packageName", pi.packageName);
-            items.add(map);
-        }
-
-
-      calc.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            openCalculator();
-        }
+        calc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openCalculator();
+            }
         });
 
         continuar.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("SetTextI18n")
-            @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
             @Override
             public void onClick(View view) {
-
-                try {
-                    switch (fase)
-                    {
-                        case NOMBRE:
-                            if(textoEditable.getText().toString().equals("")){
-                                Toast.makeText(MainActivity.this,"Escribí el nombre de tu amigo :@",Toast.LENGTH_SHORT).show();
-                                break;
-                            }
-                            amigo = new Amigo(textoEditable.getText().toString(),0,0,0);
-                            SetFase(R.string.CuantoPago,"",faseIngreso.PAGO);
-                            textoEditable.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-
+                switch (fase) {
+                    case NOMBRE:
+                        if(textoEditable.getText().toString().equals("")){
+                            Toast.makeText(MainActivity.this,"Escribí el nombre de tu amigo :@",Toast.LENGTH_SHORT).show();
                             break;
+                        }
+                        amigo = new Amigo(textoEditable.getText().toString(),0,0);
+                        SetFase(R.string.CuantoPago, faseIngreso.PAGO);
+                        textoEditable.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                        break;
 
-                        case PAGO:
-                            amigo.setPaid(Double.parseDouble(textoEditable.getText().toString()));
-                            SetFase(R.string.Descontar,"0",faseIngreso.DESCUENTO);
-                            break;
-
-                        case DESCUENTO:
-                            amigo.setDiscount(Double.parseDouble(textoEditable.getText().toString()));
-                            SetFase(R.string.NombreAmigo,"",faseIngreso.NOMBRE);
-                            textoEditable.setInputType(InputType.TYPE_CLASS_TEXT);
-                            Amigos.add(amigo);
-                            Previewadapter.notifyDataSetChanged();
-                            Double PagoGrupalActual = Double.parseDouble(pagoGrupal.getText().toString().replace(",", "."))+amigo.getPaid();
-                            pagoGrupal.setText(String.format("%.2f", PagoGrupalActual));
-                            Toast.makeText(MainActivity.this,"¡Amigo agregado! :D",Toast.LENGTH_SHORT).show();
-                            break;
-
-                        default: break;
-
-                    }
-
-                } catch (Exception excepcion)
-                {
-                    Toast.makeText(MainActivity.this,"Acá tenes que escribir un número :|",Toast.LENGTH_SHORT).show();
+                    case PAGO:
+                        amigo.setPaid(Double.parseDouble(textoEditable.getText().toString()));
+                        SetFase(R.string.NombreAmigo, faseIngreso.NOMBRE);
+                        textoEditable.setInputType(InputType.TYPE_CLASS_TEXT);
+                        Amigos.add(amigo);
+                        Previewadapter.notifyDataSetChanged();
+                        pagoTotalGrupal += amigo.getPaid();
+                        pagoGrupal.setText(String.format(getResources().getString(R.string.pago_grupal), pagoTotalGrupal));
+                        Toast.makeText(MainActivity.this,"¡Amigo agregado! :D",Toast.LENGTH_SHORT).show();
+                        break;
                 }
-
             }
         });
 
@@ -149,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
                 if (Amigos.size()>1)
                 {
                     AsignarPagos();
-                    Intent intent = new Intent(MainActivity.this,DetailsActivity.class);
+                    Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putParcelableArrayList("MiLista", (ArrayList<? extends Parcelable>) Amigos);
                     intent.putExtras(bundle);
@@ -197,68 +188,31 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-        helper.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,HelpActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
-    private void SetFase(int cuantoPago, String relleno, faseIngreso pago) {
+    private void SetFase(int cuantoPago, faseIngreso pago) {
         titulo.setText(cuantoPago);
-        textoEditable.setText(relleno);
+        textoEditable.setText("");
         fase = pago;
     }
 
     private void AsignarPagos(){
-        double totalAAplicar = Double.parseDouble(pagoGrupal.getText().toString().replace(",","."));
-        this.calcularDescuentoAAplicar();
+        resetHasToPay();
         Amigo amigoAux;
 
         for(int i = 0; i<Amigos.size();i++)
         {
             amigoAux = Amigos.get(i);
 
-            amigoAux.setHasToPay(amigoAux.getPaid()-(totalAAplicar/Amigos.size())+amigoAux.getDiscount()-amigoAux.getHasToPay()); //
+            amigoAux.setHasToPay(amigoAux.getPaid()-(pagoTotalGrupal/Amigos.size()));
 
             Amigos.set(i,amigoAux);
         }
     }
 
-    //toma el descuento de cada amigo y lo distribuye al total a pagar de cada amigo
-    private void calcularDescuentoAAplicar(){
-
-        double DescuentoAAplicar;
-
-        ResetHasToPay();
-
-        for (int i = 0; i < Amigos.size(); i++)
-        {
-            DescuentoAAplicar = 0;
-            Amigo AmigoConDesc = Amigos.get(i);
-            if(AmigoConDesc.getDiscount()>0)
-            {
-                DescuentoAAplicar = AmigoConDesc.getDiscount()/(Amigos.size()-1);
-                for (int j = 0; j < Amigos.size(); j++ )
-                {
-                    if (i!=j)
-                    {
-                        Amigos.get(j).setHasToPay(Amigos.get(j).getHasToPay()+DescuentoAAplicar);
-                    }
-                }
-            }
-
-        }
-
-    }
-
     // vuelvo a 0 hasToPay
-    private void ResetHasToPay(){
-        for (int i = 0; i < Amigos.size(); i++)
-        {
+    private void resetHasToPay() {
+        for (int i = 0; i < Amigos.size(); i++) {
             Amigos.get(i).setHasToPay(0);
         }
     }
@@ -269,28 +223,26 @@ public class MainActivity extends AppCompatActivity {
         RecycleLista.getAdapter().notifyDataSetChanged();
         fase = faseIngreso.NOMBRE;
         titulo.setText(R.string.NombreAmigo);
-        pagoGrupal.setText("0");
+        pagoTotalGrupal = 0;
+        pagoGrupal.setText(String.format(getResources().getString(R.string.pago_grupal), pagoTotalGrupal));
         textoEditable.setText("");
     }
 
-    private void DeleteRow(int position){
-
-        Double PagoGrupalActual = Double.parseDouble(pagoGrupal.getText().toString().replace(",", "."))-Amigos.get(position).getPaid();
-        pagoGrupal.setText(String.format("%.2f", PagoGrupalActual));
+    private void DeleteRow(int position) {
+        pagoTotalGrupal -= Amigos.get(position).getPaid();
+        pagoGrupal.setText(String.format(getResources().getString(R.string.pago_grupal), pagoTotalGrupal));
         Amigos.remove(position);
         RecycleLista.getAdapter().notifyItemRemoved(position);
 
     }
 
     //Busco entre todos las app, la calculadora del sistema
-    public void openCalculator(){
-        int d=0;
-        if(items.size()>=1){
-            int j=0;
-            for(j=0;j<items.size();j++){
+    private void openCalculator() {
+        int d = 0;
+        if(items.size() >= 1) {
+            for(int j=0; j<items.size(); j++) {
                 String AppName = (String) items.get(j).get("appName");
-                if(AppName.contains("Calc"))
-                {
+                if(AppName.contains("Calc")) {
                     d=j;
                     break;
                 }
@@ -307,5 +259,4 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this,"No es posible abrir la Calculadora :(",Toast.LENGTH_SHORT).show();
         }
     }
-
 }

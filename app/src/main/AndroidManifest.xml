@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.applications.usuario.compraentreamigos.MainActivity"
+            android:name="com.applications.usuario.compraentreamigos.activities.MainActivity"
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -19,8 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.applications.usuario.compraentreamigos.DetailsActivity" />
-        <activity android:name="com.applications.usuario.compraentreamigos.HelpActivity" />
+        <activity android:name="com.applications.usuario.compraentreamigos.activities.DetailsActivity" android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.applications.usuario.compraentreamigos.MainActivity">
+    tools:context="com.applications.usuario.compraentreamigos.activities.MainActivity">
 
 
     <ImageButton
@@ -36,24 +36,16 @@
         />
 
     <TextView
-        android:id="@+id/textViewpagoGrupal"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_marginTop="230dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:text="@string/pago_grupal"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <TextView
         android:id="@+id/textViewpagoGrupalPesos"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="230dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginLeft="100dp"
-        android:text="@string/pago_grupalpesos"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:text="@string/pago_grupal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <EditText
         android:id="@+id/editTextField"
@@ -77,23 +69,20 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:text="@string/calcular"
-        app:layout_constraintBottom_toTopOf="@+id/textViewpagoGrupalPesos"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/textViewpagoGrupalPesos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textViewpagoGrupalPesos" />
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewLista"
-        android:layout_width="350dp"
-        android:layout_height="244dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:windowSoftInputMode="adjustResize"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewpagoGrupal" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonCalcular" />
 
     <ImageButton
         android:id="@+id/imageButtonCalc"
@@ -102,6 +91,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/ic_dialpad_black_48dp"
@@ -119,16 +109,6 @@
         app:srcCompat="@android:drawable/ic_menu_delete"
         android:contentDescription="@string/borrar_listado" />
 
-    <ImageButton
-        android:id="@+id/imageButtonHelp"
-        android:layout_width="44dp"
-        android:layout_height="37dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
-        android:contentDescription="@string/borrar_listado"
-        app:layout_constraintBottom_toTopOf="@+id/textViewpagoGrupal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_help" />
 
 
 </android.support.constraint.ConstraintLayout>

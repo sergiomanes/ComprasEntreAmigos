@@ -1,21 +1,18 @@
-package com.applications.usuario.compraentreamigos;
-
+package com.applications.usuario.compraentreamigos.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-class Amigo implements Parcelable {
+public class Amigo implements Parcelable {
 
     private String name;
     private double hasToPay; //Si es positivo, le deben. Si es negativo, debe
     private double paid;
-    private double discount;
 
-    public Amigo(String name, double hasToPay, double paid, double discount) {
+    public Amigo(String name, double hasToPay, double paid) {
         this.name = name;
         this.hasToPay = hasToPay;
         this.paid = paid;
-        this.discount = discount;
     }
 
     public String getName() {
@@ -42,19 +39,10 @@ class Amigo implements Parcelable {
         this.paid = paid;
     }
 
-    public double getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(double discount) {
-        this.discount = discount;
-    }
-
     protected Amigo(Parcel in) {
         name = in.readString();
         hasToPay = in.readDouble();
         paid = in.readDouble();
-        discount = in.readDouble();
     }
 
     @Override
@@ -68,10 +56,8 @@ class Amigo implements Parcelable {
         dest.writeString(name);
         dest.writeDouble(hasToPay);
         dest.writeDouble(paid);
-        dest.writeDouble(discount);
     }
 
-    @SuppressWarnings("unused")
     public static final Parcelable.Creator<Amigo> CREATOR = new Parcelable.Creator<Amigo>() {
         @Override
         public Amigo createFromParcel(Parcel in) {

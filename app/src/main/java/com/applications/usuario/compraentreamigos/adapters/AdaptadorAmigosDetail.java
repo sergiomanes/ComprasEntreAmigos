@@ -1,4 +1,4 @@
-package com.applications.usuario.compraentreamigos;
+package com.applications.usuario.compraentreamigos.adapters;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.applications.usuario.compraentreamigos.models.Amigo;
+import com.applications.usuario.compraentreamigos.R;
 
 import java.util.List;
 
@@ -39,7 +42,7 @@ public class AdaptadorAmigosDetail extends RecyclerView.Adapter<AdaptadorAmigosD
         return ListaAmigos.size();
     }
 
-    class Holder extends RecyclerView.ViewHolder {
+    protected static class Holder extends RecyclerView.ViewHolder {
         TextView  TextViewNombre,TextViewDebeLeDeben,TextViewValor;
         public Holder(View itemView) {
             super(itemView);
