@@ -6,11 +6,10 @@
     android:layout_height="match_parent"
     tools:context="com.applications.usuario.compraentreamigos.activities.MainActivity">
 
-
     <ImageButton
         android:id="@+id/buttonSiguiente"
-        android:layout_width="61dp"
-        android:layout_height="47dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="28dp"
@@ -19,10 +18,12 @@
         android:gravity="center"
         android:tint="@color/colorAccent"
         android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextField"
         app:layout_constraintStart_toEndOf="@+id/editTextField"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
-        app:srcCompat="@android:drawable/ic_media_ff" />
-
+        app:layout_constraintTop_toTopOf="@+id/editTextField"
+        app:layout_constraintVertical_bias="0.933"
+        app:srcCompat="@android:drawable/ic_media_ff"
+        />
 
     <TextView
         android:id="@+id/textViewTitle"
@@ -49,14 +50,13 @@
 
     <EditText
         android:id="@+id/editTextField"
-        android:layout_width="244dp"
+        android:layout_width="245dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="28dp"
         android:ems="10"
         android:gravity="center"
-        android:inputType="textPersonName"
         android:singleLine="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
@@ -73,16 +73,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textViewpagoGrupalPesos" />
 
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewLista"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonCalcular" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonCalcular"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton
         android:id="@+id/imageButtonCalc"
@@ -94,7 +97,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_dialpad_black_48dp"
+        app:srcCompat="@drawable/calculator_icon"
         android:contentDescription="@string/calculadora" />
 
     <ImageButton

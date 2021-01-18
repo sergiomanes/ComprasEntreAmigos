@@ -1,17 +1,14 @@
 package com.applications.usuario.compraentreamigos.activities;
 
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,9 +20,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.applications.usuario.compraentreamigos.models.Amigo;
 import com.applications.usuario.compraentreamigos.R;
 import com.applications.usuario.compraentreamigos.adapters.AdaptadorAmigosPreview;
+import com.applications.usuario.compraentreamigos.models.Amigo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,14 +77,18 @@ public class MainActivity extends AppCompatActivity {
         calc = findViewById(R.id.imageButtonCalc);
         trash = findViewById(R.id.imageButtonTrash);
 
-        calculatorHandler.post(calculatorRunnable);
+        calc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openCalculator();
+            }
+        });
 
         Amigos = new ArrayList<>();
         fase = faseIngreso.NOMBRE;
 
         pagoGrupal.setText(String.format(getResources().getString(R.string.pago_grupal), pagoTotalGrupal));
 
-        RecycleLista.setHasFixedSize(true); //mejora performance si se que no va a cambiar el tamano de la letra
         RecycleLista.setItemAnimator(new DefaultItemAnimator()); //animacion por default
 
         RecycleLista.setLayoutManager(new LinearLayoutManager(this));
@@ -98,13 +99,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         RecycleLista.setAdapter(Previewadapter);
-
-        calc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openCalculator();
-            }
-        });
 
         continuar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,6 +182,12 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        calculatorHandler.post(calculatorRunnable);
     }
 
     private void SetFase(int cuantoPago, faseIngreso pago) {
